@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FileUpload from "@/components/file-upload";
 
 export default function InitialModal() {
   const formSchema = z.object({
@@ -60,7 +61,22 @@ export default function InitialModal() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
-                TODO: Image Upload
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endpoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}  
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               <FormField
                 control={form.control}
@@ -84,9 +100,10 @@ export default function InitialModal() {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button disabled={isLoading} type="submit" variant={"primary"}>Create</Button>
+              <Button disabled={isLoading} type="submit" variant={"primary"}>
+                Create
+              </Button>
             </DialogFooter>
-            
           </form>
         </Form>
       </DialogContent>
