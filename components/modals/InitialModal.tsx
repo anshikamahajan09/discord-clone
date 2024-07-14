@@ -23,6 +23,9 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FileUpload from "@/components/file-upload";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 
 export default function InitialModal() {
   const formSchema = z.object({
@@ -40,8 +43,18 @@ export default function InitialModal() {
 
   const isLoading = form.formState.isSubmitting;
 
+  const router = useRouter();
+  
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      await axios.post("/api/servers", values);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
 
   return (
